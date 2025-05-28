@@ -1,0 +1,54 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Log files
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Temporary files
+*.tmp
+*.swp
+*.swo
+*.swn
+
+# Editor directories and files
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.sublime-workspace
+
+*.mp4
+
+# Frontend (evo2-frontend - Next.js)
+ai-podcast-clipper-frontend/node_modules/
+ai-podcast-clipper-frontend/.next/
+ai-podcast-clipper-frontend/out/
+ai-podcast-clipper-frontend/.env*.local
+ai-podcast-clipper-frontend/*.tsbuildinfo
+ai-podcast-clipper-frontend/next-env.d.ts
+
+# Backend (evo2-backend - Python/Modal)
+shorts-clipping-backend/__pycache__/
+shorts-clipping-backend/*.pyc
+shorts-clipping-backend/*.pyo
+shorts-clipping-backend/*.pyd
+shorts-clipping-backend/.venv/
+shorts-clipping-backend/venv/
+shorts-clipping-backend/env/
+shorts-clipping-backend/*.env
+shorts-clipping-backend/.env
+shorts-clipping-backend/.modal*
+shorts-clipping-backend/brca1_analysis_plot.png
+shorts-clipping-backend/khan.mp4
+shorts-clipping-backend/khan-short.mp4
+shorts-clipping-backend/khan-short-longer.mp4
+shorts-clipping-backend/joe.mp4
+shorts-clipping-backend/joe-short.mp4
+shorts-clipping-backend/joe-short-longer.mp4
