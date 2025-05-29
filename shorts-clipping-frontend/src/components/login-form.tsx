@@ -1,11 +1,13 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Loader } from "lucide-react";
 import { signIn } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { cn } from "~/lib/utils";
 import { loginSchema, type LoginFormValues } from "~/schemas/auth";
 import { Button } from "./ui/button";
@@ -18,7 +20,6 @@ import {
 } from "./ui/card";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
-import { toast } from "sonner";
 
 export function LoginForm({
   className,
@@ -48,7 +49,7 @@ export function LoginForm({
       if (signInResult?.error) {
         toast.error(
           signInResult.error ||
-            "An error occurred during sign in. Please try again."
+            "An error occurred during sign in. Please try again.",
         );
         setError("Invalid email or password.");
       } else {
@@ -86,7 +87,7 @@ export function LoginForm({
                   {...register("email")}
                 />
                 {errors.email && (
-                  <p className="text-sm text-red-500">{errors.email.message}</p>
+                  <p className="text-sm text-destructive">{errors.email.message}</p>
                 )}
               </div>
               <div className="grid gap-2">
@@ -100,25 +101,31 @@ export function LoginForm({
                   {...register("password")}
                 />
                 {errors.password && (
-                  <p className="text-sm text-red-500">
+                  <p className="text-sm text-destructive">
                     {errors.password.message}
                   </p>
                 )}
               </div>
 
               {error && (
-                <p className="rounded-md bg-red-50 p-3 text-sm text-red-500">
+                <p className="rounded-md bg-destructive/10 p-3 text-sm text-destructive">
                   {error}
                 </p>
               )}
 
               <Button type="submit" className="w-full" disabled={isSubmitting}>
-                {isSubmitting ? "Logging in..." : "Log in"}
+                {isSubmitting ? (
+                  <div className="flex items-center gap-2">
+                    <Loader className="animate-spin" />
+                  </div>
+                ) : (
+                  "Log in"
+                )}
               </Button>
             </div>
             <div className="mt-4 text-center text-sm">
               Don&apos;t have an account?{" "}
-              <Link href="/signup" className="underline underline-offset-4">
+              <Link href="/sign-up" className="underline underline-offset-4">
                 Sign up
               </Link>
             </div>

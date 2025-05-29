@@ -102,7 +102,7 @@ export function SignupForm({
                   {...register("email")}
                 />
                 {errors.email && (
-                  <p className="text-sm text-red-500">{errors.email.message}</p>
+                  <p className="text-sm text-destructive">{errors.email.message}</p>
                 )}
               </div>
               <div className="grid gap-2">
@@ -116,13 +116,13 @@ export function SignupForm({
                   {...register("password")}
                 />
                 {errors.password && (
-                  <p className="text-sm text-red-500">
+                  <p className="text-sm text-destructive">
                     {errors.password.message}
                   </p>
                 )}
               </div>
               {error && (
-                <p className="rounded-md bg-red-50 p-3 text-sm text-red-500">
+                <p className="rounded-md bg-destructive  p-3 text-sm text-destructive">
                   {error}
                 </p>
               )}
