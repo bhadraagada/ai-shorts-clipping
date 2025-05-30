@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use server";
 
 import { GetObjectCommand, S3Client } from "@aws-sdk/client-s3";

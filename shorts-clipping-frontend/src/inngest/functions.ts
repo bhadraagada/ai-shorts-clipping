@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/prefer-nullish-coalescing */
 import { ListObjectsV2Command, S3Client } from "@aws-sdk/client-s3";
 import { env } from "~/env";

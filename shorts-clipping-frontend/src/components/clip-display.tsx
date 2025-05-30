@@ -1,11 +1,11 @@
 "use client";
 
 import type { Clip } from "@prisma/client";
-import { Download, Loader2, Play, VideoOff } from "lucide-react";
+import { Download, Loader2, VideoOff } from "lucide-react";
 import { useEffect, useState } from "react";
+import { toast } from "sonner";
 import { getClipPlayUrl } from "~/actions/generation";
 import { Button } from "./ui/button";
-import { toast } from "sonner";
 
 const ClipCard = ({ clip }: { clip: Clip }) => {
   const [playUrl, setPlayUrl] = useState<string | null>(null);
@@ -46,10 +46,10 @@ const ClipCard = ({ clip }: { clip: Clip }) => {
   };
 
   return (
-    <div className="group flex w-full max-w-xs flex-col gap-3 rounded-lg border border-border/40 bg-card/30 p-3 shadow-sm transition-all duration-300 ease-in-out hover:shadow-lg hover:border-border/60">
-      <div className="aspect-auto w-full overflow-hidden rounded-md bg-muted/40 border border-border/20 shadow-inner relative">
+    <div className="group border-border/40 bg-card/30 hover:border-border/60 flex w-full max-w-xs flex-col gap-3 rounded-lg border p-3 shadow-sm transition-all duration-300 ease-in-out hover:shadow-lg">
+      <div className="bg-muted/40 border-border/20 relative aspect-auto w-full overflow-hidden rounded-md border shadow-inner">
         {isLoadingUrl ? (
-          <div className="flex h-full w-full items-center justify-center bg-background/20 backdrop-blur-sm">
+          <div className="bg-background/20 flex h-full w-full items-center justify-center backdrop-blur-sm">
             <Loader2 className="text-primary h-10 w-10 animate-spin opacity-75" />
           </div>
         ) : playUrl ? (
@@ -60,19 +60,21 @@ const ClipCard = ({ clip }: { clip: Clip }) => {
             className="h-full w-full object-cover transition-opacity duration-300 group-hover:opacity-90"
           />
         ) : (
-          <div className="flex h-full w-full flex-col items-center justify-center bg-muted/20">
-            <VideoOff className="text-muted-foreground/60 h-12 w-12 mb-2" />
-            <p className="text-xs text-muted-foreground/80">Video not available</p>
+          <div className="bg-muted/20 flex h-full w-full flex-col items-center justify-center">
+            <VideoOff className="text-muted-foreground/60 mb-2 h-12 w-12" />
+            <p className="text-muted-foreground/80 text-xs">
+              Video not available
+            </p>
           </div>
         )}
       </div>
       <div className="flex flex-col gap-2">
-        <Button 
+        <Button
           variant="outline"
           size="sm"
           onClick={handleDownload}
           disabled={!playUrl || isLoadingUrl}
-          className="border-accent text-accent bg-primary/5 hover:bg-accent hover:text-primary-foreground shadow-sm hover:shadow-md focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background transition-all duration-200 ease-in-out transform hover:-translate-y-px active:translate-y-0 disabled:opacity-50 disabled:transform-none disabled:hover:bg-primary/5 disabled:hover:text-primary/90"
+          className="border-accent text-accent bg-primary/5 hover:bg-accent hover:text-primary-foreground focus-visible:ring-ring focus-visible:ring-offset-background disabled:hover:bg-primary/5 disabled:hover:text-primary/90 transform shadow-sm transition-all duration-200 ease-in-out hover:-translate-y-px hover:shadow-md focus-visible:ring-2 focus-visible:ring-offset-2 active:translate-y-0 disabled:transform-none disabled:opacity-50"
         >
           <Download className="mr-2 h-4 w-4" />
           Download Clip

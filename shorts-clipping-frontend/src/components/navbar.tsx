@@ -4,7 +4,6 @@ import {
   Coins,
   CreditCard,
   LayoutDashboard,
-  LayoutDashboardIcon,
   LogOut,
   Menu,
   Sparkles,

@@ -65,7 +65,9 @@ export const ProfilePageComponent = ({ user }: { user: UserData }) => {
       setIsEditing(false);
       window.location.reload();
     } catch (error) {
-      toast.error("Some error occurred!");
+      toast.error("Some error occurred!", {
+        description: error instanceof Error ? error.message : "Unknown error",
+      });
     } finally {
       setIsLoading(false);
     }
