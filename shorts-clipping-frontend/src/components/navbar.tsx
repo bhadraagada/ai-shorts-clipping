@@ -4,6 +4,7 @@ import {
   Coins,
   CreditCard,
   LayoutDashboard,
+  LayoutDashboardIcon,
   LogOut,
   Menu,
   Sparkles,
@@ -107,6 +108,16 @@ const NavBar = ({ credits, email }: { credits: number; email: string }) => {
                   </p>
                 </div>
               </DropdownMenuLabel>
+              <DropdownMenuSeparator className="bg-border/50" />
+              <DropdownMenuItem asChild className="cursor-pointer">
+                <Link
+                  href="/dashboard"
+                  className="flex items-center gap-2 px-2 py-2"
+                >
+                  <LayoutDashboard className="text-primary h-4 w-4" />
+                  <span className="text-primary">Dashboard</span>
+                </Link>
+              </DropdownMenuItem>
               <DropdownMenuSeparator className="bg-border/50" />
 
               <DropdownMenuItem asChild className="cursor-pointer">
