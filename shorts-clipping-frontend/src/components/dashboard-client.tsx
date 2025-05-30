@@ -1,12 +1,15 @@
 "use client";
 
 import type { Clip } from "@prisma/client";
-import { CreditCard, Loader, UploadCloud } from "lucide-react";
+import { CreditCard, Loader, RotateCw, UploadCloud } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import Dropzone, { type DropzoneState } from "shadcn-dropzone";
 import { toast } from "sonner";
+import { processVideo } from "~/actions/generation";
 import { generateUploadUrl } from "~/actions/s3";
+import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
 import {
   Card,
@@ -15,8 +18,16 @@ import {
   CardHeader,
   CardTitle,
 } from "./ui/card";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "./ui/table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
-import { processVideo } from "~/actions/generation";
+import { ClipDisplay } from "./clip-display";
 
 export const DashboardClient = ({
   uploadedFiles,
@@ -32,8 +43,16 @@ export const DashboardClient = ({
   }[];
   clips: Clip[];
 }) => {
+  const router = useRouter();
   const [files, setFiles] = useState<File[]>([]);
   const [uploading, setUploading] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
+
+  const handleRefresh = async () => {
+    setRefreshing(true);
+    router.refresh();
+    setTimeout(() => setRefreshing(false), 2000);
+  };
 
   const handleDrop = (acceptedFiles: File[]) => {
     setFiles(acceptedFiles);
@@ -126,7 +145,7 @@ export const DashboardClient = ({
           <Card>
             <CardHeader className="space-y-4 pb-6">
               <div className="space-y-2">
-                <CardTitle className="text-2xl font-semibold tracking-tight">
+                <CardTitle className="from-primary to-accent bg-gradient-to-tl bg-clip-text text-2xl font-semibold tracking-tight text-transparent">
                   Upload Podcast
                 </CardTitle>
                 <CardDescription className="text-muted-foreground text-base">
@@ -213,10 +232,146 @@ export const DashboardClient = ({
                   )}
                 </Button>
               </div>
+
+              {uploadedFiles.length > 0 && (
+                <div className="pt-8">
+                  <div className="mb-5 flex items-center justify-between">
+                    <h3 className="from-primary to-accent bg-gradient-to-r bg-clip-text text-xl font-semibold tracking-tight text-transparent">
+                      Your Upload Queue
+                    </h3>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="border-border/70 hover:bg-accent/15 hover:text-accent-foreground transform shadow-sm transition-all duration-300 ease-in-out hover:-translate-y-px hover:shadow-md active:translate-y-0"
+                      onClick={handleRefresh}
+                      disabled={refreshing}
+                    >
+                      <RotateCw
+                        className={`mr-1 h-3.5 w-3.5 ${refreshing ? "animate-spin" : ""}`}
+                      />
+                      {refreshing ? "Refreshing..." : "Refresh"}
+                    </Button>
+                  </div>
+                  <div className="border-border/50 bg-card/60 max-h-[320px] overflow-auto rounded-lg border shadow-md backdrop-blur-sm">
+                    <Table className="divide-border/30 min-w-full divide-y">
+                      <TableHeader className="bg-muted/40 sticky top-0 z-10 backdrop-blur-sm">
+                        <TableRow className="hover:bg-muted/25 border-border/30 border-b">
+                          <TableHead className="text-foreground py-3.5 pr-3 pl-4 text-left text-sm font-semibold sm:pl-6">
+                            File
+                          </TableHead>
+                          <TableHead className="text-foreground px-3 py-3.5 text-left text-sm font-semibold">
+                            Uploaded
+                          </TableHead>
+                          <TableHead className="text-foreground px-3 py-3.5 text-left text-sm font-semibold">
+                            Status
+                          </TableHead>
+                          <TableHead className="text-foreground px-3 py-3.5 text-left text-sm font-semibold">
+                            Clips
+                          </TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody className="divide-border/20 bg-background/30 divide-y">
+                        {uploadedFiles.map((item) => (
+                          <TableRow
+                            key={item.id}
+                            className="hover:bg-muted/15 transition-colors duration-200 ease-in-out"
+                          >
+                            <TableCell className="text-foreground py-4 pr-3 pl-4 text-sm font-medium whitespace-nowrap sm:pl-6">
+                              {item.filename}
+                            </TableCell>
+                            <TableCell className="text-muted-foreground px-3 py-4 text-sm whitespace-nowrap">
+                              {new Date(item.createdAt).toLocaleDateString(
+                                "en-US",
+                                {
+                                  year: "numeric",
+                                  month: "short",
+                                  day: "numeric",
+                                },
+                              )}
+                            </TableCell>
+                            <TableCell className="px-3 py-4 text-sm whitespace-nowrap">
+                              {item.status === "queued" && (
+                                <Badge
+                                  variant="outline"
+                                  className="border-blue-500/30 bg-blue-500/10 font-medium text-blue-400 shadow-sm"
+                                >
+                                  {/* <Clock className="mr-1.5 h-3.5 w-3.5" /> */}
+                                  Queued
+                                </Badge>
+                              )}
+                              {item.status === "processing" && (
+                                <Badge
+                                  variant="outline"
+                                  className="animate-pulse border-purple-500/30 bg-purple-500/10 font-medium text-purple-400 shadow-sm"
+                                >
+                                  {/* <Loader className="mr-1.5 h-3.5 w-3.5 animate-spin" /> */}
+                                  Processing
+                                </Badge>
+                              )}
+                              {item.status === "processed" && (
+                                <Badge
+                                  variant="outline"
+                                  className="border-green-500/30 bg-green-500/10 font-medium text-green-400 shadow-sm"
+                                >
+                                  {/* <CheckCircle className="mr-1.5 h-3.5 w-3.5" /> */}
+                                  Processed
+                                </Badge>
+                              )}
+                              {item.status === "no credits" && (
+                                <Badge
+                                  variant="destructive"
+                                  className="border-yellow-500/30 bg-yellow-500/10 font-medium text-yellow-400 shadow-sm"
+                                >
+                                  {/* <AlertTriangle className="mr-1.5 h-3.5 w-3.5" /> */}
+                                  No Credits
+                                </Badge>
+                              )}
+                              {item.status === "failed" && (
+                                <Badge
+                                  variant="destructive"
+                                  className="border-red-500/30 bg-red-500/10 font-medium text-red-400 shadow-sm"
+                                >
+                                  {/* <XCircle className="mr-1.5 h-3.5 w-3.5" /> */}
+                                  Failed
+                                </Badge>
+                              )}
+                            </TableCell>
+                            <TableCell className="text-foreground px-3 py-4 text-sm whitespace-nowrap">
+                              {item.clipsCount > 0 ? (
+                                <span className="text-primary font-semibold">
+                                  {item.clipsCount} clip
+                                  {item.clipsCount !== 1 ? "s" : ""}
+                                </span>
+                              ) : (
+                                <span className="text-muted-foreground/80 italic">
+                                  None yet
+                                </span>
+                              )}
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </div>
+                </div>
+              )}
             </CardContent>
           </Card>
         </TabsContent>
-        <TabsContent value="my-clips"></TabsContent>
+        <TabsContent value="my-clips">
+        <Card>
+            <CardHeader>
+              <CardTitle className="from-primary to-accent bg-gradient-to-tl bg-clip-text text-2xl font-semibold tracking-tight text-transparent">My Clips</CardTitle>
+              <CardDescription className="text-muted-foreground text-base">
+                View and manage your generated clips here. Processing may take a
+                few minuntes.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <ClipDisplay clips={clips} />
+            </CardContent>
+          </Card>
+        </TabsContent>
       </Tabs>
     </div>
   );
