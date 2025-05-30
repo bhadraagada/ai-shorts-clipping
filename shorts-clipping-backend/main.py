@@ -488,7 +488,7 @@ class AIShortsClipping:
 
         # 3 processing clips
         # Limit to first 3 clips ---> changed it later
-        for index, moment in enumerate(clip_moments[:1]):
+        for index, moment in enumerate(clip_moments[:3]):
             if "start" in moment and "end" in moment:
                 print("Processing clip" + str(index) + " from " +
                       str(moment["start"]) + " to " + str(moment["end"]))
