@@ -1,21 +1,27 @@
+import { redirect } from "next/navigation";
 import { Button } from "~/components/ui/button";
 
 export default function HomePage() {
+  redirect("/sign-in");
+
   return (
     <main className="bg-background text-foreground min-h-screen">
       {/* Hero Section */}
       {/* Navbar */}
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
+      <nav className="bg-background/80 border-border fixed top-0 right-0 left-0 z-50 border-b backdrop-blur-md">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="flex h-16 items-center justify-between">
             <div className="flex items-center">
-              <div className="text-2xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+              <div className="from-primary to-accent bg-gradient-to-r bg-clip-text text-2xl font-bold text-transparent">
                 ShortsAI
               </div>
             </div>
             <div className="hidden md:block">
               <div className="ml-10 flex items-center space-x-8">
-                <Button variant={"secondary"} className="bg-primary/10 text-primary px-4 py-2 rounded-lg font-medium hover:bg-primary/20 transition-colors">
+                <Button
+                  variant={"secondary"}
+                  className="bg-primary/10 text-primary hover:bg-primary/20 rounded-lg px-4 py-2 font-medium transition-colors"
+                >
                   Sign In
                 </Button>
               </div>
@@ -24,17 +30,17 @@ export default function HomePage() {
         </div>
       </nav>
 
-      <section className="relative min-h-screen flex items-center justify-center px-4 pt-16">
+      <section className="relative flex min-h-screen items-center justify-center px-4 pt-16">
         <div className="absolute inset-0 -z-10">
-          <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-accent/5 to-background"></div>
-          <div className="absolute top-0 left-0 right-0 h-[500px] bg-gradient-to-b from-primary/10 to-transparent"></div>
+          <div className="from-primary/5 via-accent/5 to-background absolute inset-0 bg-gradient-to-br"></div>
+          <div className="from-primary/10 absolute top-0 right-0 left-0 h-[500px] bg-gradient-to-b to-transparent"></div>
         </div>
-        
+
         <div className="mx-auto max-w-6xl text-center">
           {/* Main Heading */}
           <div className="relative">
-            <div className="absolute -inset-1 bg-gradient-to-r from-primary to-accent blur-2xl opacity-10"></div>
-            <h1 className="relative from-primary to-accent mb-6 bg-gradient-to-r bg-clip-text text-6xl font-bold text-transparent md:text-8xl py-20">
+            <div className="from-primary to-accent absolute -inset-1 bg-gradient-to-r opacity-10 blur-2xl"></div>
+            <h1 className="from-primary to-accent relative mb-6 bg-gradient-to-r bg-clip-text py-20 text-6xl font-bold text-transparent md:text-8xl">
               Create Viral Shorts
               <br />
               <span className="text-foreground animate-pulse">In Seconds</span>
@@ -44,27 +50,31 @@ export default function HomePage() {
           {/* Subtitle */}
           <p className="text-muted-foreground mx-auto mb-12 max-w-3xl text-xl leading-relaxed md:text-2xl">
             Transform your long-form videos into engaging short clips with
-            AI-powered editing. Perfect for <span className="text-primary">TikTok</span>, <span className="text-accent">YouTube Shorts</span>, and
+            AI-powered editing. Perfect for{" "}
+            <span className="text-primary">TikTok</span>,{" "}
+            <span className="text-accent">YouTube Shorts</span>, and
             <span className="text-secondary"> Instagram Reels</span>.
           </p>
 
           {/* CTA Buttons */}
           <div className="mb-16 flex flex-col items-center justify-center gap-6 sm:flex-row">
-            <button className="group bg-gradient-to-r from-primary to-accent min-w-[200px] rounded-xl px-8 py-4 text-lg font-semibold text-white shadow-lg transition-all duration-300 hover:shadow-2xl hover:scale-105">
-              Start Creating 
-              <span className="inline-block transition-transform duration-300 group-hover:translate-x-2">→</span>
+            <button className="group from-primary to-accent min-w-[200px] rounded-xl bg-gradient-to-r px-8 py-4 text-lg font-semibold text-white shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-2xl">
+              Start Creating
+              <span className="inline-block transition-transform duration-300 group-hover:translate-x-2">
+                →
+              </span>
             </button>
-            <button className="relative overflow-hidden bg-card text-card-foreground border-border min-w-[200px] rounded-xl border px-8 py-4 text-lg font-semibold transition-all duration-300 hover:shadow-xl">
+            <button className="bg-card text-card-foreground border-border relative min-w-[200px] overflow-hidden rounded-xl border px-8 py-4 text-lg font-semibold transition-all duration-300 hover:shadow-xl">
               <span className="relative z-10">Watch Demo</span>
-              <div className="absolute inset-0 bg-gradient-to-r from-primary/10 to-accent/10 transform scale-x-0 transition-transform duration-300 origin-left hover:scale-x-100"></div>
+              <div className="from-primary/10 to-accent/10 absolute inset-0 origin-left scale-x-0 transform bg-gradient-to-r transition-transform duration-300 hover:scale-x-100"></div>
             </button>
           </div>
 
           {/* Feature Preview */}
-          <div className="bg-card/50 backdrop-blur-sm border-border relative mx-auto max-w-4xl rounded-2xl border p-8">
-            <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-accent/5 to-transparent rounded-2xl"></div>
-            <div className="relative bg-muted/50 flex h-80 items-center justify-center rounded-xl overflow-hidden">
-              <div className="absolute inset-0 bg-grid-white/5"></div>
+          <div className="bg-card/50 border-border relative mx-auto max-w-4xl rounded-2xl border p-8 backdrop-blur-sm">
+            <div className="from-primary/5 via-accent/5 absolute inset-0 rounded-2xl bg-gradient-to-br to-transparent"></div>
+            <div className="bg-muted/50 relative flex h-80 items-center justify-center overflow-hidden rounded-xl">
+              <div className="bg-grid-white/5 absolute inset-0"></div>
               <div className="relative text-center">
                 <div className="bg-primary/20 mx-auto mb-4 flex h-20 w-20 items-center justify-center rounded-full backdrop-blur-sm">
                   <svg
@@ -75,8 +85,7 @@ export default function HomePage() {
                     <path d="M8 5v14l11-7z" />
                   </svg>
                 </div>
-                <p className="text-muted-foreground font-medium">
-                </p>
+                <p className="text-muted-foreground font-medium"></p>
               </div>
             </div>
           </div>
