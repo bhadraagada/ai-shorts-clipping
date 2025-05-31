@@ -178,7 +178,7 @@ def process_clip(
     output_s3_key = f"{s3_key_dir}/{clip_name}.mp4"
     print("Output S3 Key: " + output_s3_key)
 
-    clip_dir = base_dir / clip_name
+    clip_dir = base_dir / clip_name # type: ignore
     clip_dir.mkdir(parents=True, exist_ok=True)
 
     # Segment path - original clip from start to end
@@ -211,7 +211,7 @@ def process_clip(
     subprocess.run(extract_audio_cmd, shell=True,
                    check=True, capture_output=True)
 
-    shutil.copy(clip_segment_path, base_dir / f"{clip_name}.mp4")
+    shutil.copy(clip_segment_path, base_dir / f"{clip_name}.mp4") # type: ignore
     columbia_cmd = (f"python Columbia_test.py --videoName {clip_name} "
                     f"--videoFolder {str(base_dir)} "
                     f"--pretrainModel weight/finetuning_TalkSet.model")
@@ -311,10 +311,10 @@ def create_subtitles_with_ffmpeg(transcript_segments: list, clip_start: float, c
 
     subs = pysubs2.SSAFile()
 
-    subs.info["WrapStyle"] = 0
+    subs.info["WrapStyle"] = 0 # type: ignore
     subs.info["ScaledBorderAndShadow"] = "yes"
-    subs.info["PlayResX"] = 1080
-    subs.info["PlayResY"] = 1920
+    subs.info["PlayResX"] = 1080 # type: ignore
+    subs.info["PlayResY"] = 1920 # type: ignore
     subs.info["ScriptType"] = "v4.00+"
 
     style_name = "Default"
@@ -324,8 +324,8 @@ def create_subtitles_with_ffmpeg(transcript_segments: list, clip_start: float, c
     new_style.primarycolor = pysubs2.Color(255, 255, 255)
     new_style.outline = 2.0
     new_style.shadow = 2.0
-    new_style.shadowcolor = pysubs2.Color(0, 0, 0, 128)
-    new_style.alignment = 2
+    new_style.shadowcolor = pysubs2.Color(0, 0, 0, 128) # type: ignore
+    new_style.alignment = 2 # type: ignore
     new_style.marginl = 50
     new_style.marginr = 50
     new_style.marginv = 50
@@ -374,8 +374,8 @@ class AIShortsClipping:
         self,
         base_dir: str,
         video_path: str
-    ) -> str:
-        audio_path = base_dir / "audio.wav"
+    ) -> str: # type: ignore
+        audio_path = base_dir / "audio.wav" # type: ignore
         extract_cmd = f"ffmpeg -i {video_path} -vn -acodec pcm_s16le -ar 16000 -ac 1 {audio_path}"
         subprocess.run(extract_cmd, shell=True,
                        check=True, capture_output=True)
@@ -466,14 +466,14 @@ class AIShortsClipping:
 
         # 1 transcription
         transcription_segments_json = self.transcribe_video(
-            base_dir, video_path)
+            base_dir, video_path) # type: ignore
         transcription_segments = json.loads(transcription_segments_json)
 
         # 2 identify moments for clips
         print("Identifying moments for clips...")
         identified_moments_raw = self.identify_moments(transcription_segments)
 
-        cleaned_json_str = identified_moments_raw.strip()
+        cleaned_json_str = identified_moments_raw.strip() # type: ignore
         if cleaned_json_str.startswith("```json"):
             cleaned_json_str = cleaned_json_str[len("```json"):].strip()
         if cleaned_json_str.endswith("```"):
@@ -493,8 +493,8 @@ class AIShortsClipping:
                 print("Processing clip" + str(index) + " from " +
                       str(moment["start"]) + " to " + str(moment["end"]))
                 process_clip(
-                    base_dir,
-                    video_path,
+                    base_dir, # type: ignore
+                    video_path, # type: ignore
                     s3_key,
                     moment["start"],
                     moment["end"],
@@ -525,7 +525,7 @@ def main():
         "Authorization": "Bearer 123123"
     }
 
-    response = requests.post(url, json=payload, headers=headers)
+    response = requests.post(url, json=payload, headers=headers) # type: ignore
     response.raise_for_status()
     result = response.json()
     print(result)
